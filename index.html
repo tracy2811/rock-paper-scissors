@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Rock Paper Scissor</title>
+<style>
+body {
+	text-align: center;
+}
+</style>
+	</head>
+	<body>
+		<div id="score">0:0</div>
+		<button id="rock">Rock</button>
+		<button id="paper">Paper</button>
+		<button id="scissors">Scissors</button>
+		<div id="msg"></div>
+	<script>
+		let playerScore = 0, computerScore = 0;
+
+		const buttons = document.querySelectorAll("button");
+		const score = document.querySelector("#score");
+		const msg = document.querySelector("#msg");
+		buttons.forEach(btn => btn.addEventListener('click', displayResult));
+
+		function displayResult(e) {
+			let message = playRound(e.target.id, computerPlay());
+			if (message.search("You ") >= 0) {
+				playerScore++;
+				if (playerScore == 5) {
+					if (playerScore > computerScore) {
+						message += " You are the Winner!";
+					} else if (playerScore < computerScore) {
+						message += " You are the Loser!";
+					} else {
+						message += " What a tie game!";
+					}
+				}
+			} else if (message.search("I ") >= 0) {
+				computerScore++;
+			}
+
+			score.textContent = `${playerScore}:${computerScore}`;
+			msg.textContent = message;
+		};
+
+		function computerPlay() {
+			switch (Math.floor(Math.random() * 3)) {
+				case 0:
+					return "rock";
+				case 1:
+					return "paper";
+				case 2:
+					return "scissors";
+			}
+		}
+
+		function playRound(playerSelection, computerSelection) {
+			playerSelection = playerSelection.trim().toLowerCase();
+			if (playerSelection == computerSelection) {
+				return "It's a tie!";
+			}
+			switch (playerSelection) {
+				case "rock":
+					return ((computerSelection == "scissors") ? "You " : "I ") + "win! Rock beats Scissors!";
+				case "paper":
+					return ((computerSelection == "rock") ? "You " : "I ") + "win! Paper beats Rock!";
+				case "scissors":
+					return ((computerSelection == "paper") ? "You " : "I ") + "win! Scissors beats Paper!";
+				default:
+					return "Come on!";
+			}
+		}
+
+	</script>
+	</body>
+</html>
